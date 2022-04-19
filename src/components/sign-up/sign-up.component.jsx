@@ -45,7 +45,10 @@ const SignUp = () => {
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
-      console.error("User creation encountered an error", error);
+      if (error.code === 'auth/email-already-in-use')
+        alert('Cannot create user, email already in use');
+      else
+        console.error("User creation encountered an error", error);
     }
   };
 
@@ -85,7 +88,7 @@ const SignUp = () => {
           name="confirmPassword"
           value={confirmPassword}
         />
-        <button type="submit">Sign Up</button>
+        <Button type="submit">Sign Up</Button>
       </form>
     </div>
   );
