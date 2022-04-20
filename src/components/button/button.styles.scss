@@ -9,8 +9,8 @@
   background-color: black;
   color: white;
   text-transform: uppercase;
-  font-family: 'Open Sans Condensed';
-  font-weight: bolder;
+  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-weight: 500;
   border: none;
   cursor: pointer;
   display: flex;
@@ -22,7 +22,7 @@
     border: 1px solid black;
   }
 
-  &.google-sign-in {
+  &.google-authentication {
     background-color: #4285f4;
     color: white;
 
