@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
+
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -45,10 +46,9 @@ const SignUp = () => {
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
-      if (error.code === 'auth/email-already-in-use')
-        alert('Cannot create user, email already in use');
-      else
-        console.error("User creation encountered an error", error);
+      if (error.code === "auth/email-already-in-use")
+        alert("Cannot create user, email already in use");
+      else console.error("User creation encountered an error", error);
     }
   };
 
