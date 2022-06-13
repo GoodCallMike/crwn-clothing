@@ -1,13 +1,14 @@
 import { useState } from "react";
-import Button from "../button/button.component";
+
 import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
 
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
-import { SignUpContainer, SignUpTitle } from "./sign-up.styles";
+import { SignUpContainer } from "./sign-up.styles";
 
 const defaultFormFields = {
   displayName: "",
@@ -20,11 +21,6 @@ const SignUp = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
-  };
-
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -33,7 +29,7 @@ const SignUp = () => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      alert("passwords do not match");
       return;
     }
 
@@ -46,15 +42,23 @@ const SignUp = () => {
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (error) {
-      if (error.code === "auth/email-already-in-use")
+      if (error.code === "auth/email-already-in-use") {
         alert("Cannot create user, email already in use");
-      else console.error("User creation encountered an error", error);
+      } else {
+        console.log("user creation encountered an error", error);
+      }
     }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
   };
 
   return (
     <SignUpContainer>
-      <SignUpTitle>Don't have an account?</SignUpTitle>
+      <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
@@ -65,6 +69,7 @@ const SignUp = () => {
           name="displayName"
           value={displayName}
         />
+
         <FormInput
           label="Email"
           type="email"
@@ -73,6 +78,7 @@ const SignUp = () => {
           name="email"
           value={email}
         />
+
         <FormInput
           label="Password"
           type="password"
@@ -81,6 +87,7 @@ const SignUp = () => {
           name="password"
           value={password}
         />
+
         <FormInput
           label="Confirm Password"
           type="password"

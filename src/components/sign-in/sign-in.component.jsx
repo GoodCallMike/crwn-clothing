@@ -1,17 +1,14 @@
 import { useState } from "react";
-import Button from "../button/button.component";
+
 import FormInput from "../form-input/form-input.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
 import {
-  signInWithGooglePopup,
   signInAuthUserWithEmailAndPassword,
+  signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
 
-import {
-  SignInContainer,
-  SignInTitle,
-  ButtonsContainer,
-} from "./sign-in.styles";
+import { SignInContainer, ButtonsContainer } from "./sign-in.styles";
 
 const defaultFormFields = {
   email: "",
@@ -21,11 +18,6 @@ const defaultFormFields = {
 const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormFields({ ...formFields, [name]: value });
-  };
 
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
@@ -42,23 +34,19 @@ const SignIn = () => {
       await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
     } catch (error) {
-      switch (error.code) {
-        case "auth/user-not-found":
-          alert("No user associated with this email");
-          break;
-        case "auth/wrong-password":
-          alert("Incorrect password for email");
-          break;
-        default:
-          console.error("Something went wrong", error);
-          break;
-      }
+      console.log("user sign in failed", error);
     }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormFields({ ...formFields, [name]: value });
   };
 
   return (
     <SignInContainer>
-      <SignInTitle>Already have an account?</SignInTitle>
+      <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
@@ -69,6 +57,7 @@ const SignIn = () => {
           name="email"
           value={email}
         />
+
         <FormInput
           label="Password"
           type="password"
@@ -79,8 +68,12 @@ const SignIn = () => {
         />
         <ButtonsContainer>
           <Button type="submit">Sign In</Button>
-          <Button type="button" onClick={signInWithGoogle} buttonType="google">
-            Google sign in
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type="button"
+            onClick={signInWithGoogle}
+          >
+            Google Sign In
           </Button>
         </ButtonsContainer>
       </form>
